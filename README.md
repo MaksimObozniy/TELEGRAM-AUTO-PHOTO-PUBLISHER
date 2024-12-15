@@ -7,7 +7,7 @@
 Склонируйте проект на ваш компьютер:
 
 ```bash
-git clone https://.git
+git clone https://github.com/MaksimObozniy/TELEGRAM-AUTO-PHOTO-PUBLISHER.git
 cd ваш_репозиторий
 ```
 
