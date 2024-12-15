@@ -1,10 +1,11 @@
-from utils_function.get_api import get_api_key
 from utils_function.create_folder import create_folder
+from utils_function.saving_photos import saving_photos
 import requests
+import config
 import os
 
 
-def nasa_apod():
+def download_nasa_apod_photos():
     
     url_api = "https://api.nasa.gov/planetary/apod"
     
@@ -17,27 +18,24 @@ def nasa_apod():
     response.raise_for_status()
     
     folder_name = "Apod_images"
-    create_folder()
+    create_folder(folder_name)
     
     data_photo_day = response.json()
     
     for index, photo_data in enumerate(data_photo_day, start=1):
-        image_link = photo_data.get("hdurl")
+        image_url = photo_data.get("hdurl")
         
-        if not image_link:
+        if not image_url:
             continue
         
         file_name = f"apod_{index}.jpg"
         file_path = os.path.join(folder_name, file_name)
         
-        img_response = requests.get(image_link)
-        img_response.raise_for_status()
+        saving_photos(image_url, file_path, params='')
             
-        with open(file_path, 'wb') as file:
-            file.write(img_response.content)
-                
 
 if __name__ == "__main__":
-    NASA_API_KEY = get_api_key()
-    nasa_apod()
+    NASA_API_KEY = os.getenv("NASA_API_KEY")
+    
+    download_nasa_apod_photos()
     
