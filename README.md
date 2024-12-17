@@ -19,7 +19,7 @@ python -m venv .venv/
 \.venv\Scripts\activate
 ```
 ```bash
-pip install -r requirements.tx
+pip install -r requirements.txt
 ```
 ### 3. Настройка переменных окружения
 Создайте в корне проекта файл .env и добавьте туда следующие переменные окружения:
