@@ -25,12 +25,15 @@ pip install -r requirements.txt
 Создайте в корне проекта файл .env и добавьте туда следующие переменные окружения:
 
 ```env
-BOT_TOKEN=ваш_токен_бота
-CHAT_ID=ваш_ID_канала
-PUBLISH_DELAY=14400  # Задержка между публикациями в секундах 
+NASA_API_KEY=Ключ для получения доступа к фотографиям
+TELEGRAM_BOT_TOKEN=ваш_токен_бота
+TELEGRAM_CHAT_ID =ID вашего канала
+PUBLISH_DELAY=14400  # Задержка между публикациями в секундах
+DERICTORY=Директория где будут создаваться папки с фото после запуска файлов для скачивания.
 ```
-- BOT_TOKEN: Токен вашего Telegram-бота, который можно получить через BotFather.
-- CHAT_ID: ID вашего Telegram-канала или группы (можно получить с помощью Telegram-бота @userinfobot).
+- NASA_API_KEY: Ключ можно получить на оффициальной сранице NASA (https://api.nasa.gov/#apod)
+- TELEGRAM_BOT_TOKEN: Токен вашего Telegram-бота, который можно получить через BotFather.
+- TELEGRAM_CHAT_ID: ID вашего Telegram-канала или группы (можно получить с помощью Telegram-бота @userinfobot).
 - PUBLISH_DELAY: Интервал между публикациями в секундах. Например:
     3600 секунд = 1 час.
     7200 секунд = 2 часа.
