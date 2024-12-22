@@ -5,9 +5,8 @@ from utils_function.create_folder import create_folder
 from utils_function.saving_photos import saving_photos
 
 
-def fetch_spacex_launch(launch_id):
+def fetch_spacex_launch(launch_id, folder_name="Spacex_images"):
     
-    folder_name = "Spacex_images"
     create_folder(folder_name)
     
     url = f"https://api.spacexdata.com/v5/launches/{launch_id}"
@@ -19,22 +18,22 @@ def fetch_spacex_launch(launch_id):
     
     links = launch_data.get("links")
     
-    images_url = []
+    image_urls = []
     if links:
         flickr = links.get("flickr")
         if flickr:
-            images_url = flickr.get("original", [])
+            image_urls = flickr.get("original", [])
        
        
-    if not images_url:
+    if not image_urls:
         print("Нет изображений для скачивания")
         return
     
-    for index, image_url in enumerate(images_url, start=1):
+    for index, photo in enumerate(image_urls, start=1):
         file_name = f"spacex{index}.jpg"
         file_path = os.path.join(folder_name, file_name)
         
-        saving_photos(image_url, file_path, params="")
+        saving_photos(photo, file_path, params="")
 
 
 if __name__ == "__main__":

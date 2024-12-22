@@ -1,21 +1,21 @@
 import os
 import requests
-import config
 from utils_function.create_folder import create_folder
 from utils_function.saving_photos import saving_photos
 from datetime import datetime
 
 
-def download_nasaepic_photo():
+
+
+def download_nasaepic_photo(api_key, folder_name="EPIC_images"):
     
     api_url = "https://api.nasa.gov/EPIC/api/natural/images"
-    params = {"api_key": NASA_API_KEY}
+    params = {"api_key": api_key}
     
     response = requests.get(api_url, params=params)
     response.raise_for_status()
     epic_data = response.json()
     
-    folder_name = "EPIC_images"
     create_folder(folder_name)
     
     for index, photo_data in enumerate(epic_data, start=1):
@@ -39,5 +39,4 @@ def download_nasaepic_photo():
 if __name__ == "__main__":
     
     NASA_API_KEY = os.getenv("NASA_API_KEY")
-    
-    download_nasaepic_photo()
+    download_nasaepic_photo(NASA_API_KEY)
