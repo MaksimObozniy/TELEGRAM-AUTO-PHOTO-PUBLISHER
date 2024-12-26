@@ -3,55 +3,66 @@ import argparse
 import os
 import random
 import time
+from dotenv import load_dotenv
 
 
-TELEGRAM_BOT_TOKEN = os.environ['TELEGRAM_BOT_TOKEN'] 
-TELEGRAM_CHAT_ID = os.environ['TELEGRAM_CHAT_ID']
-PARS_DIRECTORY = os.getenv('PARS_DIRECTORY', default=os.getcwd())
-MAX_FILE_SIZE_MB = 20
-
-def get_photo_list():
+def get_photo_list(pars_directory):
     
     photos =[]
-    for root, _, files in os.walk(PARS_DIRECTORY):
-        for filen in files:
-            if filen.lower().endswith((".jpg", ".jpeg", ".png")):
-                photos.append(os.path.join(root, filen))
+    for root, _, files in os.walk(pars_directory):
+        for file in files:
+            if file.lower().endswith((".jpg", ".jpeg", ".png")):
+                photos.append(os.path.join(root, file))
+    print(photos)
     return photos
 
-def file_size_scan(photo_path):
+def file_size_scan(photo_path, max_file_size_mb):
     file_size = os.path.getsize(photo_path) / (1024 * 1024)
     
-    if file_size > MAX_FILE_SIZE_MB:
+    if file_size > max_file_size_mb:
         return False
     return True
     
     
-def publish_photo(photo_path, bot):
+def publish_photo(photo_path, bot, telegram_chat_id):
     with open(photo_path, 'rb') as photo:
-        bot.send_photo(chat_id=TELEGRAM_CHAT_ID, photo=photo)
+        bot.send_photo(chat_id=telegram_chat_id, photo=photo)
         print(f"Фото опубликовано {photo_path}")
 
 
-def main_logic(pubilsh_delay, bot):
-    photo_list = get_photo_list()
+def main_logic(publish_delay, bot, telegram_chat_id, pars_directory, max_file_size_mb):
+    photo_list = get_photo_list(pars_directory)
     random.shuffle(photo_list)
     
     while True:
         for photo_path in photo_list:
-            publish_photo(photo_path, bot)
-            time.sleep(pubilsh_delay)
+            if file_size_scan(photo_path, max_file_size_mb):
+                publish_photo(photo_path, bot, telegram_chat_id)
+                time.sleep(publish_delay)
+            else:
+                print(f"Пропущено из-за размера: {photo_path}")
         random.shuffle(photo_list)
 
 
 def main():
-    bot = telegram.Bot(token=TELEGRAM_BOT_TOKEN)
+    load_dotenv()
+    
+    telegram_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
+    telegram_chat_id = os.getenv('TELEGRAM_CHAT_ID')
+    pars_directory = os.getenv('PARS_DIRECTORY', default=os.getcwd())
+    max_file_size_mb = 20
+    
+    
+    bot = telegram.Bot(token=telegram_bot_token)
     
     parser = argparse.ArgumentParser(description="Запуск бота для отправки фото в мессенджер Телеграм")
-    parser.add_argument("-pubilsh_delay", type=int, default=14400, help="Задержка времени перед отправкой фотографии (стандартное значение 4 часа: 14400 секунд)")
+    parser.add_argument("-publish_delay", 
+                        type=int, 
+                        default=14400, 
+                        help="Задержка времени перед отправкой фотографии (стандартное значение 4 часа: 14400 секунд)")
     args = parser.parse_args()
     
-    main_logic(args.pubilsh_delay, bot)
+    main_logic(args.publish_delay, bot, telegram_chat_id, pars_directory, max_file_size_mb)
     
     
 if __name__ == "__main__":
