@@ -15,7 +15,7 @@ def get_photo_list(pars_directory):
                 photos.append(os.path.join(root, file))
     return photos
 
-def file_size_scan(photo_path, max_file_size_mb):
+def scan_file_size(photo_path, max_file_size_mb):
     file_size = os.path.getsize(photo_path) / (1024 * 1024)
     
     if file_size > max_file_size_mb:
@@ -35,7 +35,7 @@ def main_logic(publish_delay, bot, telegram_chat_id, pars_directory, max_file_si
     
     while True:
         for photo_path in photo_list:
-            if file_size_scan(photo_path, max_file_size_mb):
+            if scan_file_size(photo_path, max_file_size_mb):
                 publish_photo(photo_path, bot, telegram_chat_id)
                 time.sleep(publish_delay)
             else:
