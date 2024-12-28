@@ -2,14 +2,15 @@ from utils_function.create_folder import create_folder
 from utils_function.saving_photos import saving_photos
 import requests
 import os
+from dotenv import load_dotenv
 
 
-def download_nasa_apod_photos(api_key, folder_name="Apod_images"):
+def download_nasa_apod_photos(nasa_api_key, folder_name="Apod_images"):
     
     url_api = "https://api.nasa.gov/planetary/apod"
     
     params = {
-        "api_key": api_key,
+        "api_key": nasa_api_key,
         "count": 30
     }
     
@@ -33,7 +34,7 @@ def download_nasa_apod_photos(api_key, folder_name="Apod_images"):
             
 
 if __name__ == "__main__":
-    NASA_API_KEY = os.environ['NASA_API_KEY']
-    
-    download_nasa_apod_photos(NASA_API_KEY)
+    load_dotenv()
+    nasa_api_key = os.environ['NASA_API_KEY']
+    download_nasa_apod_photos(nasa_api_key)
     

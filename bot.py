@@ -15,7 +15,7 @@ def get_photo_list(photos_directory):
                 photos.append(os.path.join(root, file))
     return photos
 
-def scan_file_size(photo_path, max_file_size_mb):
+def scan_file_size(photo_path, max_file_size_mb=20):
     file_size = os.path.getsize(photo_path) / (1024 * 1024)
     
     if file_size > max_file_size_mb:
@@ -30,26 +30,25 @@ def publish_photo(photo_path, bot, telegram_chat_id):
 
 
 def execution_main_logic(time_delay, bot, telegram_chat_id, photos_directory, max_file_size_mb):
-    photo_list = get_photo_list(photos_directory)
-    random.shuffle(photo_list)
+    photos = get_photo_list(photos_directory)
+    random.shuffle(photos)
     
     while True:
-        for photo_path in photo_list:
+        for photo_path in photos:
             if scan_file_size(photo_path, max_file_size_mb):
                 publish_photo(photo_path, bot, telegram_chat_id)
                 time.sleep(time_delay)
             else:
                 print(f"Пропущено из-за размера: {photo_path}")
-        random.shuffle(photo_list)
+        random.shuffle(photos)
 
 
 def main():
     load_dotenv()
     
-    telegram_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
-    telegram_chat_id = os.getenv('TELEGRAM_CHAT_ID')
+    telegram_bot_token = os.environ['TELEGRAM_BOT_TOKEN']
+    telegram_chat_id = os.environ['TELEGRAM_CHAT_ID']
     photos_directory = os.getenv('PHOTOS_DIRECTORY', default=os.getcwd())
-    max_file_size_mb = 20
     
     
     bot = telegram.Bot(token=telegram_bot_token)
@@ -61,7 +60,7 @@ def main():
                         help="Задержка времени перед отправкой фотографии (стандартное значение 4 часа: 14400 секунд)")
     args = parser.parse_args()
     
-    execution_main_logic(args.time_delay, bot, telegram_chat_id, photos_directory, max_file_size_mb)
+    execution_main_logic(args.time_delay, bot, telegram_chat_id, photos_directory, max_file_size_mb=20)
     
     
 if __name__ == "__main__":

@@ -2,9 +2,8 @@ import os
 import requests
 from utils_function.create_folder import create_folder
 from utils_function.saving_photos import saving_photos
+from dotenv import load_dotenv
 from datetime import datetime
-
-
 
 
 def download_nasa_epic_photo(api_key, folder_name="EPIC_images"):
@@ -37,6 +36,6 @@ def download_nasa_epic_photo(api_key, folder_name="EPIC_images"):
             
             
 if __name__ == "__main__":
-    
-    NASA_API_KEY = os.getenv("NASA_API_KEY")
-    download_nasa_epic_photo(NASA_API_KEY)
+    load_dotenv()
+    nasa_api_key = os.environ["NASA_API_KEY"]
+    download_nasa_epic_photo(nasa_api_key)
