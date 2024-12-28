@@ -29,7 +29,7 @@ def publish_photo(photo_path, bot, telegram_chat_id):
         print(f"Фото опубликовано {photo_path}")
 
 
-def execution_main_logic(publish_delay, bot, telegram_chat_id, pars_directory, max_file_size_mb):
+def execution_main_logic(time_delay, bot, telegram_chat_id, pars_directory, max_file_size_mb):
     photo_list = get_photo_list(pars_directory)
     random.shuffle(photo_list)
     
@@ -37,7 +37,7 @@ def execution_main_logic(publish_delay, bot, telegram_chat_id, pars_directory, m
         for photo_path in photo_list:
             if scan_file_size(photo_path, max_file_size_mb):
                 publish_photo(photo_path, bot, telegram_chat_id)
-                time.sleep(publish_delay)
+                time.sleep(time_delay)
             else:
                 print(f"Пропущено из-за размера: {photo_path}")
         random.shuffle(photo_list)
@@ -55,13 +55,13 @@ def main():
     bot = telegram.Bot(token=telegram_bot_token)
     
     parser = argparse.ArgumentParser(description="Запуск бота для отправки фото в мессенджер Телеграм")
-    parser.add_argument("-publish_delay", 
+    parser.add_argument("-time_delay", 
                         type=int, 
                         default=14400, 
                         help="Задержка времени перед отправкой фотографии (стандартное значение 4 часа: 14400 секунд)")
     args = parser.parse_args()
     
-    execution_main_logic(args.publish_delay, bot, telegram_chat_id, pars_directory, max_file_size_mb)
+    execution_main_logic(args.time_delay, bot, telegram_chat_id, pars_directory, max_file_size_mb)
     
     
 if __name__ == "__main__":
