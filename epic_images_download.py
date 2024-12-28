@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 
-def download_nasaepic_photo(api_key, folder_name="EPIC_images"):
+def download_nasa_epic_photo(api_key, folder_name="EPIC_images"):
     
     api_url = "https://api.nasa.gov/EPIC/api/natural/images"
     params = {"api_key": api_key}
@@ -39,4 +39,4 @@ def download_nasaepic_photo(api_key, folder_name="EPIC_images"):
 if __name__ == "__main__":
     
     NASA_API_KEY = os.getenv("NASA_API_KEY")
-    download_nasaepic_photo(NASA_API_KEY)
+    download_nasa_epic_photo(NASA_API_KEY)
