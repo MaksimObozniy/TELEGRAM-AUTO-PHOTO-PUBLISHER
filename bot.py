@@ -13,7 +13,6 @@ def get_photo_list(pars_directory):
         for file in files:
             if file.lower().endswith((".jpg", ".jpeg", ".png")):
                 photos.append(os.path.join(root, file))
-    print(photos)
     return photos
 
 def file_size_scan(photo_path, max_file_size_mb):
