@@ -6,10 +6,10 @@ import time
 from dotenv import load_dotenv
 
 
-def get_photo_list(pars_directory):
+def get_photo_list(photos_directory):
     
     photos =[]
-    for root, _, files in os.walk(pars_directory):
+    for root, _, files in os.walk(photos_directory):
         for file in files:
             if file.lower().endswith((".jpg", ".jpeg", ".png")):
                 photos.append(os.path.join(root, file))
@@ -29,8 +29,8 @@ def publish_photo(photo_path, bot, telegram_chat_id):
         print(f"Фото опубликовано {photo_path}")
 
 
-def execution_main_logic(time_delay, bot, telegram_chat_id, pars_directory, max_file_size_mb):
-    photo_list = get_photo_list(pars_directory)
+def execution_main_logic(time_delay, bot, telegram_chat_id, photos_directory, max_file_size_mb):
+    photo_list = get_photo_list(photos_directory)
     random.shuffle(photo_list)
     
     while True:
@@ -48,7 +48,7 @@ def main():
     
     telegram_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
     telegram_chat_id = os.getenv('TELEGRAM_CHAT_ID')
-    pars_directory = os.getenv('PARS_DIRECTORY', default=os.getcwd())
+    photos_directory = os.getenv('PHOTOS_DIRECTORY', default=os.getcwd())
     max_file_size_mb = 20
     
     
@@ -61,7 +61,7 @@ def main():
                         help="Задержка времени перед отправкой фотографии (стандартное значение 4 часа: 14400 секунд)")
     args = parser.parse_args()
     
-    execution_main_logic(args.time_delay, bot, telegram_chat_id, pars_directory, max_file_size_mb)
+    execution_main_logic(args.time_delay, bot, telegram_chat_id, photos_directory, max_file_size_mb)
     
     
 if __name__ == "__main__":
