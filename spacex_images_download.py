@@ -5,7 +5,7 @@ from utils_function.create_folder import create_folder
 from utils_function.saving_photos import saving_photos
 
 
-def fetch_spacex_launch(launch_id, folder_name="Spacex_images"):
+def download_spacex_launch_photos(launch_id, folder_name="Spacex_images"):
     
     create_folder(folder_name)
     
@@ -42,4 +42,4 @@ if __name__ == "__main__":
     parser.add_argument("-launch_id", type=str, default="5eb87d46ffd86e000604b388", help="ID запуска ракет. По умолчанию стоит запуск 'latest'")
     args = parser.parse_args()
     
-    fetch_spacex_launch(args.launch_id)
+    download_spacex_launch_photos(args.launch_id)
