@@ -33,7 +33,7 @@ def download_spacex_launch_photos(launch_id, folder_name="Spacex_images"):
         file_name = f"spacex{index}.jpg"
         file_path = os.path.join(folder_name, file_name)
         
-        saving_photos(photo, file_path, params="")
+        saving_photos(photo, file_path, params=None)
 
 
 if __name__ == "__main__":
